@@ -1,3 +1,18 @@
+#### Certificates
+```
+# Generate a 4096-bit RSA private key encrypted with AES-256
+openssl genrsa -aes256 -out myServerPrivateKey.key 4096
+# Generate a Certificate Signing Request (CSR)
+openssl req -new -key myServerPrivateKey.key -out myServerCertificate.csr
+# Generate a self-signed certificate from the CSR
+openssl x509 -req -in myServerCertificate.csr -sha512 -signkey myServerPrivateKey.key -CAcreateserial -out myServerCertificate.pem -days 3650
+
+# INTERACTIVE METHOD (PROMPTS FOR CERTIFICATE DETAILS)
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365
+
+# NON-INTERACTIVE METHOD (AUTOMATED / SCRIPT-FRIENDLY)
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+```
 #### Split a .pfx File into .pem and .key Files Using OpenSSL
 ```
 # The following command will generate a private key file without a password from your .pfx file (requires password):
