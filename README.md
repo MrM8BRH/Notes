@@ -1,4 +1,5 @@
 #### Certificates
+[Generate CSR from Windows Server with SAN (Subject Alternative Name)](https://aventistech.com/2019/08/09/generate-csr-from-windows-server-with-san-subject-alternative-name/)
 ```
 # Generate a 4096-bit RSA private key encrypted with AES-256
 openssl genrsa -aes256 -out myServerPrivateKey.key 4096
@@ -12,6 +13,41 @@ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3
 
 # NON-INTERACTIVE METHOD (AUTOMATED / SCRIPT-FRIENDLY)
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+
+######################
+# Create Internal CA #
+######################
+openssl genrsa -out ca.key 4096
+
+openssl req -x509 -new -nodes \
+-key ca.key \
+-sha256 \
+-days 3650 \
+-out ca.pem \
+-subj "/C=XX/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+
+############
+# For Apps #
+############
+# Create <app> private key
+openssl genrsa -out app.key 4096
+
+# Create <app> CSR (request)
+openssl req -new \
+-key app.key \
+-out app.csr \
+-subj "/C=XX/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+
+# Sign <app> certificate with CA (IMPORTANT)
+openssl x509 -req \
+-in app.csr \
+-CA ca.pem \
+-CAkey ca.key \
+-CAcreateserial \
+-out app.crt \
+-days 3650 \
+-sha256 \
+-extfile <(printf "subjectAltName=IP:192.168.1.10,DNS:abc.xyz.com")
 ```
 #### Split a .pfx File into .pem and .key Files Using OpenSSL
 ```
