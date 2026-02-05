@@ -13,9 +13,6 @@ irm https://get.activated.win | iex
 ```powershell
 irm emadadel4.github.io/itt.ps1 | iex
 ```
-#### Enable Advanced Security Audit Policy
-gpedit.msc → Computer Configuration → Windows Settings → Security Settings → Advanced Audit Policy Configuration → System Audit Policies - Local Group Policy Object.
-
 #### CPL (Control Panel) Shortcuts
 
 | **Applet** **Name**      | **File Name** |
