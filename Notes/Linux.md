@@ -1,3 +1,18 @@
+#### UUIDs
+```
+# Using Kernel Generators
+cat /proc/sys/kernel/random/uuid
+
+# Using uuidgen
+## Creating Random-Based UUIDs
+uuidgen -r
+## Creating Time-Based UUIDs
+uuidgen -t
+
+# Using Python
+python –c “import uuid; print(uuid.uuid4())”
+```
+
 #### Power
 ```
 # View the available CPU speed governors for the first CPU core
